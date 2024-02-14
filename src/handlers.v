@@ -4,6 +4,21 @@ import x.vweb
 import net.http
 import os
 
+fn send_file(mut ctx Context, file_path string) vweb.Result {
+	if os.is_file(file_path) {
+		return ctx.file(file_path)
+	}
+	return ctx.not_found()
+}
+
+fn send_compressed_file(mut ctx Context, file_extension string, file_path string) vweb.Result {
+	content_type := get_content_type(file_extension)
+	ctx.set_header(http.CommonHeader.content_encoding, 'gzip')
+	ctx.set_header(http.CommonHeader.vary, 'Accept-Encoding')
+	ctx.set_content_type(content_type)
+	return ctx.file(file_path)
+}
+
 // handle_get_file serves the requested file, only in development.
 fn handle_get_file(app &App, mut ctx Context, file_name string) vweb.Result {
 	if app.mode == 'production' {
@@ -12,25 +27,23 @@ fn handle_get_file(app &App, mut ctx Context, file_name string) vweb.Result {
 
 	file_path := '${app.public_directory}/${file_name}'
 
-	if accepted_encoding := ctx.get_header(http.CommonHeader.accept_encoding) {
-		if accepted_encoding.contains('gzip') {
-			if file_extension := may_be_compressed(file_name) {
-				compressed_file_path := '${file_path}${gzip_extension}'
-				if os.is_file(compressed_file_path) {
-					content_type := get_content_type(file_extension)
-					ctx.set_header(http.CommonHeader.content_encoding, 'gzip')
-					ctx.set_header(http.CommonHeader.vary, 'Accept-Encoding')
-					ctx.set_content_type(content_type)
-					return ctx.file(compressed_file_path)
-				}
-			}
-		}
+	accepted_encoding := ctx.get_header(http.CommonHeader.accept_encoding) or {
+		return send_file(mut ctx, file_path)
 	}
 
-	if os.is_file(file_path) {
-		return ctx.file(file_path)
+	if !accepted_encoding.contains('gzip') {
+		return send_file(mut ctx, file_path)
 	}
-	return ctx.not_found()
+
+	file_extension := get_compressible_file_extension(file_name) or {
+		return send_file(mut ctx, file_path)
+	}
+
+	compressed_file_path := '${file_path}${gzip_extension}'
+	if os.is_file(compressed_file_path) {
+		return send_compressed_file(mut ctx, file_extension, compressed_file_path)
+	}
+	return send_file(mut ctx, file_path)
 }
 
 // handle_list_files returns a list of files available to be served.

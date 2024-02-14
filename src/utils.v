@@ -9,16 +9,13 @@ fn string_default_if_empty(possibly_empty string, default_string string) string 
 	return possibly_empty
 }
 
-const plausible_gzip = ['.html', '.css', '.js', '.json', '.xml', '.md']
-const gzip_extension = '.gz'
-
-fn may_be_compressed(file_name string) ?string {
+fn get_compressible_file_extension(file_name string) !string {
 	for extension in plausible_gzip {
 		if file_name.ends_with(extension) {
 			return extension
 		}
 	}
-	return none
+	return error('This file should not be compressed')
 }
 
 fn get_content_type(extension string) string {
