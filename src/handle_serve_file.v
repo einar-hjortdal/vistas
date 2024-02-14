@@ -20,7 +20,7 @@ fn send_compressed_file(mut ctx Context, file_extension string, file_path string
 }
 
 // handle_get_file serves the requested file, only in development.
-fn handle_get_file(app &App, mut ctx Context, file_name string) vweb.Result {
+fn handle_serve_file(app &App, mut ctx Context, file_name string) vweb.Result {
 	if app.mode == 'production' {
 		return ctx.request_error("You're running vistas in production mode. Your files should be served by your web server (eg. Apache httpd)")
 	}
@@ -44,18 +44,4 @@ fn handle_get_file(app &App, mut ctx Context, file_name string) vweb.Result {
 		return send_compressed_file(mut ctx, file_extension, compressed_file_path)
 	}
 	return send_file(mut ctx, file_path)
-}
-
-// handle_list_files returns a list of files available to be served.
-// Requires authorization. (TODO)
-fn handle_list_files(app &App, mut ctx Context) vweb.Result {
-	entries := os.ls(app.public_directory) or { [] }
-	return ctx.json(entries)
-}
-
-// handle_create_file creates a file in app.public_directory.
-// If requested, and if it makes sense to do so, a .gz file is also created.
-// Requires authorization. (TODO)
-fn handle_create_file(app &App, mut ctx Context) vweb.Result {
-	return ctx.ok('OK')
 }

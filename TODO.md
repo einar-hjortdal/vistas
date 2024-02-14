@@ -1,1 +1,5 @@
 - Cache small files
+- Create directories
+  - Create file in specified directory
+  - List files in specified directory
+- Move file/directory

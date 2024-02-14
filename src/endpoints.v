@@ -4,7 +4,7 @@ import x.vweb
 
 @['/file/:file_name'; get]
 fn (app &App) get_file(mut ctx Context, file_name string) vweb.Result {
-	return handle_get_file(app, mut ctx, file_name)
+	return handle_serve_file(app, mut ctx, file_name)
 }
 
 @['/api/files'; get]
@@ -28,7 +28,7 @@ fn (app &App) auth_user(mut ctx Context) vweb.Result {
 	return ctx.json('{}')
 }
 
-@['/'; get]
+@['/api/health'; get]
 fn (app &App) health(mut ctx Context) vweb.Result {
 	// health status
 	return ctx.json('{}')
