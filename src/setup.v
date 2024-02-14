@@ -2,6 +2,20 @@ module main
 
 import os
 
+fn create_app_instance() !&App {
+	env_mode := string_default_if_empty(os.getenv('MODE'), 'development')
+	env_public_directory := string_default_if_empty(os.getenv('PUBLIC_DIRECTORY'), 'public')
+
+	if env_mode != 'development' && env_mode != 'production' {
+		return error('Environment variable `MODE` must be either `development` or `production`')
+	}
+
+	return &App{
+		mode: string_default_if_empty(env_mode, 'development')
+		public_directory: env_public_directory
+	}
+}
+
 fn create_public_directory(dirname string) {
 	dirpath := '${os.getwd()}/${dirname}'
 	if _ := os.stat(dirname) {

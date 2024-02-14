@@ -10,19 +10,16 @@ struct Context {
 }
 
 pub struct App {
+	mode             string
 	public_directory string
 }
 
 fn main() {
 	dotenv.load()
 
-	public_directory := os.getenv('PUBLIC_DIRECTORY')
-	run_at_port := strconv.atoi(os.getenv('PORT')) or { 8080 }
-
-	mut app := &App{
-		public_directory: string_default_if_empty(public_directory, 'public')
-	}
+	mut app := create_app_instance() or { panic(err) }
 	setup(app)
 
-	vweb.run[App, Context](mut app, run_at_port)
+	env_run_at_port := strconv.atoi(os.getenv('PORT')) or { 8080 }
+	vweb.run[App, Context](mut app, env_run_at_port)
 }
