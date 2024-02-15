@@ -20,7 +20,7 @@ fn send_compressed_file(mut ctx Context, file_extension string, file_path string
 }
 
 // handle_get_file serves the requested file, only in development.
-fn handle_serve_file(app &App, mut ctx Context, file_name string) vweb.Result {
+fn handle_serve_public(app &App, mut ctx Context, file_name string) vweb.Result {
 	if app.mode == 'production' {
 		return ctx.request_error("You're running vistas in production mode. Your files should be served by your web server (eg. Apache httpd)")
 	}
