@@ -13,8 +13,8 @@ fn (app &App) list_files(mut ctx Context) vweb.Result {
 }
 
 @['/api/files'; post]
-fn (app &App) create_file(mut ctx Context) vweb.Result {
-	return handle_create_file(app, mut ctx)
+fn (app &App) create_files(mut ctx Context) vweb.Result {
+	return handle_create_files(app, mut ctx)
 }
 
 @['/api/files/:file_name'; delete]

@@ -35,7 +35,7 @@ fn handle_serve_file(app &App, mut ctx Context, file_name string) vweb.Result {
 		return send_file(mut ctx, file_path)
 	}
 
-	file_extension := get_compressible_file_extension(file_name) or {
+	file_extension := get_gzippable_file_extension(file_name) or {
 		return send_file(mut ctx, file_path)
 	}
 
