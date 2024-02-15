@@ -8,8 +8,13 @@ fn (app &App) get_file(mut ctx Context, file_name string) vweb.Result {
 }
 
 @['/api/files'; get]
-fn (app &App) list_files(mut ctx Context) vweb.Result {
-	return handle_list_files(app, mut ctx)
+fn (app &App) list_files_in_root(mut ctx Context) vweb.Result {
+	return handle_list_files(app, mut ctx, '')
+}
+
+@['/api/files/:directory...'; get]
+fn (app &App) list_files_in_dir(mut ctx Context, directory string) vweb.Result {
+	return handle_list_files(app, mut ctx, directory)
 }
 
 @['/api/files/:file_name...'; post]
