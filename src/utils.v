@@ -9,6 +9,7 @@ fn string_default_if_empty(possibly_empty string, default_string string) string 
 	return possibly_empty
 }
 
+// get_gzippable_file_extension returns the extension of the file that could be gzipped, if it could.
 fn get_gzippable_file_extension(file_name string) !string {
 	for extension in plausible_gzip {
 		if file_name.ends_with(extension) {
@@ -18,6 +19,8 @@ fn get_gzippable_file_extension(file_name string) !string {
 	return error('This file should not be compressed')
 }
 
+// could_gzip wraps get_gzippable_file_extension and returns a boolean. Useful when the extension is
+// not needed.
 fn could_gzip(file_name string) bool {
 	if _ := get_gzippable_file_extension(file_name) {
 		return true

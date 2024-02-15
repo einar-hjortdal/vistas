@@ -12,19 +12,13 @@ fn (app &App) list_files(mut ctx Context) vweb.Result {
 	return handle_list_files(app, mut ctx)
 }
 
-@['/api/files'; post]
-fn (app &App) create_files(mut ctx Context) vweb.Result {
-	return handle_create_files(app, mut ctx)
+@['/api/files/:file_name...'; post]
+fn (app &App) create_file(mut ctx Context, file_name string) vweb.Result {
+	return handle_create_file(app, mut ctx, file_name)
 }
 
-@['/api/files/:file_name'; delete]
+@['/api/files/:file_name...'; delete]
 fn (app &App) delete_file(mut ctx Context, file_name string) vweb.Result {
-	return ctx.json('{}')
-}
-
-@['/api/auth'; post]
-fn (app &App) auth_user(mut ctx Context) vweb.Result {
-	// authenticate
 	return ctx.json('{}')
 }
 
