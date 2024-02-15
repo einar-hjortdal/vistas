@@ -5,6 +5,7 @@ import os
 import x.vweb
 
 // handle_create_files creates a files with the provided file_name.
+// If the file already exists, the file will be overwritten.
 // This function is designed to only process one file.
 // The body of the request should contain the file.
 // Query `gzip`: when present or 'true', the file will be compressed.
