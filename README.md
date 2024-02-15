@@ -1,6 +1,6 @@
 # vistas
 
-Central file server API, meant to be deployed behind a revserse proxy.
+Central file server API, meant to be deployed behind a reverse proxy.
 
 ## Features
 
