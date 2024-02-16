@@ -28,5 +28,5 @@ In this situation the central file server is given the domain `files.coachonko.c
 Apache httpd acts as reverse proxy:
 - It receives requests and terminates TLS connections
 - Routes requests to `files.coachonko.com/api`, coming from the backend servers, to the vistas API
-- Handles requests to `files.coachonko.com`, coming from the browsers, by serving files managed by vistas.
+- Handles requests to `files.coachonko.com/public`, coming from the browsers, by serving files managed by vistas.
 -->
