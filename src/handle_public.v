@@ -27,10 +27,8 @@ fn handle_serve_public(app &App, mut ctx Context, file_name string) vweb.Result 
 		return ctx.request_error("You're running vistas in production mode. Your files should be served by your web server (eg. Apache httpd)")
 	}
 
-	file_path := os.join_path(app.public_directory, file_name)
-	if !file_path.starts_with(app.public_directory) {
-		error := new_vistas_error(http.Status.bad_request, 'Invalid path')
-		return ctx.send_error(error, fn_name)
+	file_path := safely_join_path(app.public_directory, file_name) or {
+		return ctx.send_error(err, fn_name)
 	}
 
 	accepted_encoding := ctx.get_header(http.CommonHeader.accept_encoding) or {

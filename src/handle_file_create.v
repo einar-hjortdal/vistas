@@ -3,7 +3,6 @@ module main
 import compress.gzip
 import os
 import x.vweb
-import net.http
 
 // handle_create_files creates a files with the provided file_name.
 // If the file already exists, the file will be overwritten.
@@ -16,10 +15,8 @@ fn handle_create_file(app &App, mut ctx Context, file_name string) vweb.Result {
 
 	should_gzip := 'gzip' in ctx.query || ctx.query['gzip'] == 'true'
 
-	file_path := os.join_path(app.public_directory, file_name)
-	if !file_path.starts_with(app.public_directory) {
-		error := new_vistas_error(http.Status.bad_request, 'Invalid path')
-		return ctx.send_error(error, fn_name)
+	file_path := safely_join_path(app.public_directory, file_name) or {
+		return ctx.send_error(err, fn_name)
 	}
 
 	mut file := os.create(file_path) or { return ctx.send_error(err, fn_name) }
