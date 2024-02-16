@@ -27,15 +27,15 @@ fn (app &App) delete_file(mut ctx Context, file_name string) vweb.Result {
 	return handle_delete_file(app, mut ctx, file_name)
 }
 
-// @['/api/directory/:directory_name...'; post]
-// fn (app &App) create_directory(mut ctx Context, directory_name string) vweb.Result {
-// return handle_create_directory(app, mut ctx, directory_name)
-// }
+@['/api/directory/:directory_name...'; post]
+fn (app &App) create_directory(mut ctx Context, directory_name string) vweb.Result {
+	return handle_create_directory(app, mut ctx, directory_name)
+}
 
-// @['/api/directory/:directory_name...'; delete]
-// fn (app &App) delete_directory(mut ctx Context, directory_name string) vweb.Result {
-// return handle_delete_directory(app, mut ctx, directory_name)
-// }
+@['/api/directory/:directory_name...'; delete]
+fn (app &App) delete_directory(mut ctx Context, directory_name string) vweb.Result {
+	return handle_delete_directory(app, mut ctx, directory_name)
+}
 
 @['/api/health'; get]
 fn (app &App) health(mut ctx Context) vweb.Result {
