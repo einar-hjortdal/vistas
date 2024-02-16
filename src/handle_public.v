@@ -21,11 +21,17 @@ fn send_compressed_file(mut ctx Context, file_extension string, file_path string
 
 // handle_get_file serves the requested file, only in development.
 fn handle_serve_public(app &App, mut ctx Context, file_name string) vweb.Result {
+	fn_name := 'handle_serve_public'
+
 	if app.mode == 'production' {
 		return ctx.request_error("You're running vistas in production mode. Your files should be served by your web server (eg. Apache httpd)")
 	}
 
-	file_path := '${app.public_directory}/${file_name}'
+	file_path := os.join_path(app.public_directory, file_name)
+	if !file_path.starts_with(app.public_directory) {
+		error := new_vistas_error(http.Status.bad_request, 'Invalid path')
+		return ctx.send_error(error, fn_name)
+	}
 
 	accepted_encoding := ctx.get_header(http.CommonHeader.accept_encoding) or {
 		return send_file(mut ctx, file_path)
