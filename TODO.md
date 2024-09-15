@@ -1,5 +1,4 @@
-- Cache small files
+- Do not delete files
 - Create directories
-  - Create file in specified directory
-  - List files in specified directory
-- Move file/directory
+  - year/month
+- Do not use dotenv, expose config instead
