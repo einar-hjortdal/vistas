@@ -1,9 +1,9 @@
 module main
 
-import x.vweb
+import veb
 import os
 import strconv
-import coachonko.dotenv
+import einar_hjortdal.dotenv
 
 struct Context {
 	vweb.Context
